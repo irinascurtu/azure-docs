@@ -60,6 +60,17 @@ App Service requires an application setting that specifically listens for HTTP/2
    - **Value** = **8585**
 
 These settings configure the port on your application that's specified to listen for HTTP/2 requests.
+Then go inside your code and make sure you specify to listen on this port:
+`
+builder.WebHost.ConfigureKestrel(options =>
+{   
+    options.ListenAnyIP(8585, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+});
+
+`
 
 Now that you've configured the HTTP version, port, and proxy, you can successfully make HTTP/2 calls to your web app by using gRPC.
 
